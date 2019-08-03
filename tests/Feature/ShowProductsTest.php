@@ -28,6 +28,8 @@ class ShowProductsTest extends TestCase
 
         $this->get("product/{$product->id}")
             ->assertSee($product->title)
-            ->assertSee($product->description);
+            ->assertSee($product->description)
+            ->assertSee($product->price)
+            ->assertSee($product->quantity);
     }
 }
