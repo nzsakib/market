@@ -11,7 +11,7 @@
     <div class="container mt-3 mb-3">
         @include('navbar')
     </div>
-    <div id="root">
+    <div id="app">
         @yield('content')
     </div>
 
