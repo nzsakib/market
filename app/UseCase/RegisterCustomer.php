@@ -15,8 +15,8 @@ class RegisterCustomer
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required|confirmed'
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:5'
         ]);
 
         $customer = User::create([
