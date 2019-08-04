@@ -2,15 +2,16 @@
 
 namespace Tests;
 
+use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function signIn($user) 
+    public function customerSignIn($user = null)
     {
-        $user = $user ?? factory('App\User');
+        $user = $user ?? create(User::class, ['type' => User::TYPE_CUSTOMER]);
 
         $this->actingAs($user);
 

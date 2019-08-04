@@ -18,4 +18,6 @@ Route::group([
     Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
 });
 
-Route::get('/cart', 'CartController@index');
+Route::get('cart', 'CartController@index');
+Route::post('cart', 'CartController@store');
+Route::delete('cart', 'CartController@destroy');

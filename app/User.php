@@ -55,4 +55,9 @@ class User extends Authenticatable
 
         return $this->verificationToken()->create(['token' => $token]);
     }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
 }
