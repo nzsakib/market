@@ -15,7 +15,14 @@ class CartController extends Controller
 
     public function index()
     {
-        return view('customer.cart');
+        $cart = auth()->user()->cart;
+
+        if ($cart) {
+            $items = $cart->cartItems()->with('product')->get();
+        } else {
+            return redirect('/');
+        }
+        return view('customer.cart', compact('items'));
     }
 
     public function store(Request $request)

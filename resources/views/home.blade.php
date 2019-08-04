@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('partials.message')
     <div class="row">
         @foreach ($products as $product)
         <div class="col-3 product">
@@ -15,7 +16,11 @@
                 </div>
 
                 <div class="col-8 text-right">
-                    <a href="#" class="btn btn-sm btn-primary">Add to cart</a>
+                    <form action="/cart" method="POST">
+                        @csrf 
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="btn btn-sm btn-primary">Add to cart</button>
+                    </form>
                 </div>
             </div>
         </div>     

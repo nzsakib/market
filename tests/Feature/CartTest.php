@@ -38,4 +38,37 @@ class CartTest extends TestCase
 
         $this->assertCount(1, $customer->fresh()->cart->cartItems);
     }
+
+    /** @test */
+    public function guest_can_not_add_to_cart()
+    {
+        $this->post('/cart', ['product_id' => 1])->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function guest_can_not_delete_from_cart()
+    {
+        $customer = CustomerFactory::withCartItem(2)->create();
+
+        $this->delete('/cart', ['product_id' => $customer->cart->cartItems[0]->product_id])->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function customer_can_not_add_to_cart_a_non_existant_product()
+    {
+        $this->customerSignIn();
+
+        $this->post('/cart', ['product_id' => 1])->assertStatus(404);
+    }
+
+    /** @test */
+    public function customer_can_list_cart_products()
+    {
+        $this->withoutExceptionHandling();
+        $customer = CustomerFactory::withCartItem(3)->create();
+
+        $this->actingAs($customer)
+            ->get('/cart')
+            ->assertSee($customer->cart->cartItems[0]->product->title);
+    }
 }
