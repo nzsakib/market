@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -36,4 +37,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function verificationToken()
+    {
+        return $this->hasOne(Token::class);
+    }
+
+    public function generateToken()
+    {
+        $token = Str::random(40);
+        while ($this->verificationToken()->where('token', $token)->exists()) {
+            $token = Str::random(40);
+        }
+
+        return $this->verificationToken()->create(['token' => $token]);
+    }
 }

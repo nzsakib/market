@@ -3,17 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UseCase\RegisterCustomer;
 
 class RegistrationController extends Controller
 {
-    public function register(Request $request) 
+    public function register(Request $request)
     {
-        // validate data 
+        $this->getRegistrationMethod()->handle($request);
 
-        // store data 
+        return redirect()->route('register.notify');
+    }
 
-        // email the user
+    public function getRegistrationMethod()
+    {
+        // if (request('type') === 'vendor') {
+        //     return new RegisterVendor();
+        // }
 
-        // redirect to notify page
+        return new RegisterCustomer;
+    }
+
+    public function show()
+    {
+        return view('registration.customer');
+    }
+
+    public function emailNotify()
+    {
+        return view('registration.notify');
     }
 }
