@@ -71,4 +71,17 @@ class CustomerRegistrationTest extends TestCase
 
         $this->post('/register', $data)->assertSessionHasErrors(['password']);
     }
+
+    /** @test */
+    public function customer_can_verify_email_address()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = create(User::class, ['email_verified_at' => null]);
+        $token = $user->generateToken()->token;
+
+        $this->get("/verify?token={$token}");
+
+        $this->assertNotNull($user->fresh()->email_verified_at);
+    }
 }
