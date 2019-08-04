@@ -31,7 +31,7 @@ class LoginController extends Controller
             Auth::login($user);
 
             if ($user->type == User::TYPE_CUSTOMER) {
-                return redirect()->route('customer.dashboard');
+                return redirect()->route('customer.profile');
             }
         } else {
             return back()->withErrors(['message' => 'Invalid login credentials!!']);

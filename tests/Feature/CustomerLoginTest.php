@@ -21,7 +21,7 @@ class CustomerLoginTest extends TestCase
         $this->post('/login', [
             'email' => $customer->email,
             'password' => '12345'
-        ])->assertRedirect(route('customer.dashboard'));
+        ])->assertRedirect(route('customer.profile'));
     }
 
     /** @test */

@@ -15,5 +15,5 @@ Route::get('logout', 'LoginController@logout');
 Route::group([
     'prefix' => 'customer'
 ], function () {
-    Route::get('dashboard', 'VerificationController@success')->name('customer.dashboard');
+    Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
 });
