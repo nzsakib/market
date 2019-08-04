@@ -22,7 +22,8 @@ class RegisterCustomer
         $customer = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password
+            'password' => $request->password,
+            'type' => User::TYPE_CUSTOMER,
         ]);
 
         event(new CustomerRegistered($customer));

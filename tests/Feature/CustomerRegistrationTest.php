@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Tests\TestCase;
 use App\Mail\VerifyEmailAddress;
 use Illuminate\Support\Facades\Mail;
@@ -27,7 +28,8 @@ class CustomerRegistrationTest extends TestCase
         $this->post('/register', $data)->assertRedirect(route('register.notify'));
 
         $this->assertDatabaseHas('users', [
-            'email' => $data['email']
+            'email' => $data['email'],
+            'type' => User::TYPE_CUSTOMER,
         ]);
 
         Mail::assertSent(VerifyEmailAddress::class, function ($mail) use ($data) {
