@@ -17,3 +17,5 @@ Route::group([
 ], function () {
     Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
 });
+
+Route::get('/cart', 'CartController@index');

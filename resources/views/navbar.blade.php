@@ -19,6 +19,9 @@
             <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
             </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            </li>
         </ul>
 
 
