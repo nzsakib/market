@@ -2,11 +2,16 @@
 
 @section('content')
     <div class="container">
-        <div class="error">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </div>
+        <h1 class="text-center">Register as Customer</h1>
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="/register" method="POST">
             @csrf 
             <div class="form-group">
