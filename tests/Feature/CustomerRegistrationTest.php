@@ -36,4 +36,39 @@ class CustomerRegistrationTest extends TestCase
             return  $mail->hasTo($data['email']);
         });
     }
+
+    /** @test */
+    public function customer_requires_email_address()
+    {
+        $data = [
+            'name' => 'john doe',
+            'password' => '123456',
+            'password_confirmation' => '123456'
+        ];
+
+        $this->post('/register', $data)->assertSessionHasErrors(['email']);
+    }
+
+    /** @test */
+    public function customer_requires_a_name()
+    {
+        $data = [
+            'password' => '123456',
+            'email' => 'test@gmail.com',
+            'password_confirmation' => '123456'
+        ];
+
+        $this->post('/register', $data)->assertSessionHasErrors(['name']);
+    }
+
+    /** @test */
+    public function customer_requires_password()
+    {
+        $data = [
+            'name' => 'john doe',
+            'email' => 'test@gmail.com'
+        ];
+
+        $this->post('/register', $data)->assertSessionHasErrors(['password']);
+    }
 }
