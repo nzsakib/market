@@ -13,14 +13,20 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+            @if(auth()->check())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ auth()->user()->profilePath() }}">Profile</a>
+                </li>    
+            @else
             <li class="nav-item">
                 <a class="nav-link" href="/register">Register</a>
             </li>
             <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/login">Login</a>
             </li>
+            @endif
             <li class="nav-item">
-                    <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
             </li>
         </ul>
 

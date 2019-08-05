@@ -60,4 +60,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(Cart::class);
     }
+
+    public function profilePath()
+    {
+        if ($this->type == self::TYPE_CUSTOMER) {
+            return route('customer.profile');
+        }
+    }
 }

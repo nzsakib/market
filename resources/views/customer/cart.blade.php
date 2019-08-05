@@ -17,7 +17,7 @@
                         <input type="hidden" name="cart_item" value="">
                         <label for="" class="mr-1">Qty: </label>
                         <input type="number" name="quantity" class="col-2 form-control mr-2" value="{{ $item->quantity }}">
-                        <button class="btn btn-sm btn-info">Update</button>
+                        <button class="btn btn-sm btn-outline-info">Update</button>
                     </form>
 
                     
@@ -43,7 +43,16 @@
         <div class="col-4">
             <h3>Checkout Summery</h3>
             <hr>
+            <div class="row">
+                <div class="col">
+                    Total
+                </div>
+                <div class="col">
+                    500 Tk
+                </div>
+            </div>
 
+            <a href="#" class="btn btn-outline-primary btn-block mt-5">Checkout</a>
         </div>
     </div>
 </div>
