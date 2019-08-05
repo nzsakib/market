@@ -24,8 +24,8 @@ class ProductRepository
      * @param integer $productId
      * @return Product
      */
-    public function find(int $productId) : Product
+    public function find(int $productId) : ?Product
     {
-        return $this->product->findOrFail($productId);
+        return $this->product->find($productId);
     }
 }
