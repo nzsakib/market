@@ -68,4 +68,12 @@ class CartRepository
 
         return $user->cart->cartItems()->where('product_id', $product->id)->delete();
     }
+
+    public function addQuantity(Product $product, int $quantity)
+    {
+        return auth()->user()->cart
+                    ->cartItems()
+                    ->where('product_id', $product->id)
+                    ->update(['quantity' => $quantity]);
+    }
 }

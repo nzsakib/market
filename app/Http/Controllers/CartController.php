@@ -51,4 +51,19 @@ class CartController extends Controller
 
         return back()->withMessage('Product removed from cart.');
     }
+
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'product_id' => 'required',
+            'quantity' => 'required|int|min:1'
+        ]);
+
+        $this->cart->addQuantity(
+            $this->product->find($request->product_id),
+            $request->quantity
+        );
+
+        return back();
+    }
 }

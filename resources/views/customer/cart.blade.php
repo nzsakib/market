@@ -14,7 +14,8 @@
                     <h5>{{ $item->product->title }}</h5>
                     <p>Shop name here</p>
                     <form action="/cart/update" method="POST" class="form-inline">
-                        <input type="hidden" name="cart_item" value="">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $item->product_id }}">
                         <label for="" class="mr-1">Qty: </label>
                         <input type="number" name="quantity" class="col-2 form-control mr-2" value="{{ $item->quantity }}">
                         <button class="btn btn-sm btn-outline-info">Update</button>

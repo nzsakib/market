@@ -71,4 +71,19 @@ class CartTest extends TestCase
             ->get('/cart')
             ->assertSee($customer->cart->cartItems[0]->product->title);
     }
+
+    /** @test */
+    public function user_can_update_item_quantity_in_cart()
+    {
+        $this->withoutExceptionHandling();
+        $customer = CustomerFactory::withCartItem(1)->create();
+
+        $this->actingAs($customer)
+            ->post('/cart/update', [
+                'product_id' => $customer->cart->cartItems[0]->product_id,
+                'quantity' => 4,
+            ]);
+
+        $this->assertEquals(4, $customer->cart->cartItems->fresh()[0]->quantity);
+    }
 }

@@ -21,3 +21,4 @@ Route::group([
 Route::get('cart', 'CartController@index');
 Route::post('cart', 'CartController@store');
 Route::delete('cart', 'CartController@destroy');
+Route::post('/cart/update', 'CartController@update');
