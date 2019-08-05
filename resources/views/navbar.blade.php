@@ -14,6 +14,9 @@
 
         <ul class="navbar-nav ml-auto">
             @if(auth()->check())
+                <span class="navbar-text mr-5">
+                    Wallet: {{ auth()->user()->wallet }} Tk 
+                </span>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ auth()->user()->profilePath() }}">Profile</a>
                 </li>    

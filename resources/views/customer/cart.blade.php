@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-8">
+            @include('partials.error')
             @if($cart)
             @foreach ($cart->cartItems as $item)
             <div class="row mb-2">
@@ -53,7 +54,7 @@
                 </div>
             </div>
 
-            <a href="#" class="btn btn-outline-primary btn-block mt-5">Checkout</a>
+            <a href="{{ route('cart.checkout') }}" class="btn btn-outline-primary btn-block mt-5">Checkout</a>
         </div>
     </div>
 </div>

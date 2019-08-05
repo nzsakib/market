@@ -33,9 +33,13 @@ class CartController extends Controller
             'product_id' => 'required'
         ]);
 
-        $this->cart->add(
-            $this->product->find($request->product_id)
-        );
+        $product = $this->product->find($request->product_id);
+
+        if ($product->quantity < 0) {
+            return back()->withErrors("This product has no stocks remaining.");
+        }
+
+        $this->cart->add($product);
 
         return back()->withMessage('Product added to cart.');
     }
@@ -60,12 +64,30 @@ class CartController extends Controller
             'quantity' => 'required|int|min:1'
         ]);
 
+        $product = $this->product->find($request->product_id);
+
+        if ($product->quantity < $request->quantity) {
+            return back()->withErrors("This product has only {$product->quantity} stocks remaining.");
+        }
+
         $this->cart->addQuantity(
-            $this->product->find($request->product_id),
+            $product,
             $request->quantity
         );
 
         return back();
+    }
+
+    /**
+     * Show a checkout page for customer
+     *
+     * @return View
+     */
+    public function showCheckout()
+    {
+        $total = $this->cart->getTotalPrice();
+
+        return view('customer.checkout', compact('total'));
     }
 
     /**
@@ -82,7 +104,7 @@ class CartController extends Controller
         ]);
 
         $user = auth()->user();
-        if ($user->cart->isEmpty()) {
+        if (is_null($user->cart) || $user->cart->isEmpty()) {
             return redirect('/');
         }
 
@@ -108,8 +130,10 @@ class CartController extends Controller
                 'product_id' => $item->product->id,
                 'price' => $item->product->price,
             ]);
+            $item->product->quantity -= $item->quantity;
+            $item->product->save();
         }
 
-        return redirect('customer.profile');
+        return redirect()->route('customer.profile');
     }
 }

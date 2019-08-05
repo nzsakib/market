@@ -24,5 +24,6 @@ Route::name('cart.')->group(function () {
     Route::post('cart', 'CartController@store');
     Route::delete('cart', 'CartController@destroy');
     Route::post('cart/update', 'CartController@update');
-    Route::post('checkout', 'CartController@checkout')->name('checkout');
+    Route::get('checkout', 'CartController@showCheckout')->name('checkout');
+    Route::post('checkout', 'CartController@checkout');
 });
