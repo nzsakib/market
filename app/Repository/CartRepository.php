@@ -44,10 +44,16 @@ class CartRepository
             $cart = $user->cart()->create();
         }
 
-        return $cart->cartItems()->create([
-            'product_id' => $product->id,
-            'quantity' => 1,
-        ]);
+        $cartItem = $cart->cartItems()->where('product_id', $product->id)->first();
+
+        if (!$cartItem) {
+            $cartItem = $cart->cartItems()->create([
+                'product_id' => $product->id,
+                'quantity' => 1,
+            ]);
+        }
+
+        return $cartItem;
     }
 
     /**
