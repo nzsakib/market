@@ -14,7 +14,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'user_id' => function () {
             return factory(User::class);
         },
-        'price' => 300,
+        'price' => 30,
         'quantity' => 5,
         'status' => 1,
     ];

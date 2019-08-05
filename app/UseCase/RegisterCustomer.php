@@ -24,6 +24,7 @@ class RegisterCustomer
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'type' => User::TYPE_CUSTOMER,
+            'wallet' => 500,
         ]);
 
         event(new CustomerRegistered($customer));

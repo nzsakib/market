@@ -101,5 +101,6 @@ class CartTest extends TestCase
             ->post(route('cart.checkout'), $data);
 
         $this->assertCount(1, $customer->orders->first()->orderItems);
+        $this->assertEquals(470, $customer->fresh()->wallet);
     }
 }

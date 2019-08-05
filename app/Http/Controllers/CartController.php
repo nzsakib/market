@@ -86,13 +86,21 @@ class CartController extends Controller
             return redirect('/');
         }
 
+        $totalPrice = $this->cart->calculateTotalPrice($user->cart);
+
+        if ($totalPrice > $user->wallet) {
+            return redirect()->route('cart.index')->withErrors('You don\'t have enough fund in your wallet.');
+        }
+        $user->wallet = $user->wallet - $totalPrice;
+        $user->save();
+
         $cartItems = $user->cart->cartItems()->with('product')->get();
 
         $order = $user->orders()->create([
             'name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address,
-            'total' => $this->cart->calculateTotalPrice($user->cart)
+            'total' => $totalPrice
         ]);
 
         foreach ($cartItems as $item) {

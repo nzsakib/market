@@ -19,7 +19,7 @@ Route::group([
 });
 
 Route::name('cart.')->group(function () {
-    Route::get('cart', 'CartController@index');
+    Route::get('cart', 'CartController@index')->name('index');
     Route::post('cart', 'CartController@store');
     Route::delete('cart', 'CartController@destroy');
     Route::post('cart/update', 'CartController@update');
