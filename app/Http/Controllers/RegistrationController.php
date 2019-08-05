@@ -9,6 +9,7 @@ class RegistrationController extends Controller
 {
     public function register(Request $request)
     {
+        // (new RegistrationRepository)->register($request);
         $this->getRegistrationMethod()->handle($request);
 
         return redirect()->route('register.notify');

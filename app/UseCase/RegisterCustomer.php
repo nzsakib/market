@@ -27,5 +27,7 @@ class RegisterCustomer
         ]);
 
         event(new CustomerRegistered($customer));
+
+        return $customer;
     }
 }

@@ -4,8 +4,8 @@
 <div class="container">
     <div class="row">
         <div class="col-8">
-            @if(isset($items))
-            @foreach ($items as $item)
+            @if($cart)
+            @foreach ($cart->cartItems as $item)
             <div class="row">
                 <div class="col-3">
                     <img src="https://placeimg.com/200/200/arch" alt="" class="img-fluid">

@@ -5,24 +5,23 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\UseCase\UserCart;
 use Illuminate\Http\Request;
+use App\Repository\CartRepository;
 
 class CartController extends Controller
 {
-    public function __construct()
+    private $cart;
+
+    public function __construct(CartRepository $cart)
     {
         $this->middleware('auth');
+        $this->cart = $cart;
     }
 
     public function index()
     {
-        $cart = auth()->user()->cart;
+        $cart = $this->cart->first();
 
-        if ($cart) {
-            $items = $cart->cartItems()->with('product')->get();
-        } else {
-            return redirect('/');
-        }
-        return view('customer.cart', compact('items'));
+        return view('customer.cart', compact('cart'));
     }
 
     public function store(Request $request)
@@ -33,7 +32,7 @@ class CartController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        (new UserCart)->add($product);
+        $this->cart->add($product);
 
         return back()->withMessage('Product added to cart.');
     }
@@ -45,7 +44,8 @@ class CartController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
-        (new UserCart)->remove($product);
+
+        $this->cart->remove($product);
 
         return back()->withMessage('Product removed from cart.');
     }
