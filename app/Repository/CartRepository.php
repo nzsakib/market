@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Cart;
-use App\Product;
+use App\Models\Cart;
+use App\Models\Product;
 
 class CartRepository
 {
@@ -18,7 +18,7 @@ class CartRepository
      * get user cart with cart items
      *
      * @param void
-     * @return \App\Cart
+     * @return \App\Models\Cart
      */
     public function first()
     {
@@ -34,7 +34,7 @@ class CartRepository
      * Add a new product to cart
      *
      * @param Product $product
-     * @return \App\CartItem
+     * @return \App\Models\CartItem
      */
     public function add(Product $product)
     {

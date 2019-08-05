@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
+use App\Models\User;
 
 class CustomerLoginTest extends TestCase
 {
@@ -13,6 +13,7 @@ class CustomerLoginTest extends TestCase
     /** @test */
     public function customer_can_login_to_dashboard()
     {
+        $this->withoutExceptionHandling();
         $customer = create(User::class, [
             'password' => bcrypt('12345'),
             'type' => User::TYPE_CUSTOMER

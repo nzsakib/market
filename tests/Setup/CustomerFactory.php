@@ -2,8 +2,8 @@
 
 namespace Tests\Setup;
 
-use App\User;
-use App\CartItem;
+use App\Models\User;
+use App\Models\CartItem;
 
 class CustomerFactory
 {

@@ -2,7 +2,7 @@
 
 namespace App\UseCase;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\CustomerRegistered;
 use Illuminate\Foundation\Validation\ValidatesRequests;

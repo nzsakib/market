@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use App\Product;
+use App\Models\Product;
 use Tests\TestCase;
 use Facades\Tests\Setup\CustomerFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
