@@ -22,8 +22,9 @@ class CartController extends Controller
     public function index()
     {
         $cart = $this->cart->first();
+        $total = $this->cart->getTotalPrice();
 
-        return view('customer.cart', compact('cart'));
+        return view('customer.cart', compact('cart', 'total'));
     }
 
     public function store(Request $request)
@@ -65,5 +66,42 @@ class CartController extends Controller
         );
 
         return back();
+    }
+
+    /**
+     * Checkout a user cart
+     *
+     * @return void
+     */
+    public function checkout(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
+
+        $user = auth()->user();
+        if ($user->cart->isEmpty()) {
+            return redirect('/');
+        }
+
+        $cartItems = $user->cart->cartItems()->with('product')->get();
+
+        $order = $user->orders()->create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'total' => $this->cart->calculateTotalPrice($user->cart)
+        ]);
+
+        foreach ($cartItems as $item) {
+            $order->orderItems()->create([
+                'product_id' => $item->product->id,
+                'price' => $item->product->price,
+            ]);
+        }
+
+        return redirect('customer.profile');
     }
 }

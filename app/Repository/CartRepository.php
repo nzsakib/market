@@ -4,14 +4,15 @@ namespace App\Repository;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\CartItem;
 
 class CartRepository
 {
-    private $cart;
+    private $userCart;
 
-    public function __construct(Cart $cart)
+    public function __construct()
     {
-        $this->cart = $cart;
+        $this->userCart = null;
     }
 
     /**
@@ -22,7 +23,7 @@ class CartRepository
      */
     public function first()
     {
-        $userCart = auth()->user()->cart;
+        $this->userCart = $userCart = auth()->user()->cart;
         if ($userCart) {
             $userCart->load('cartItems');
         }
@@ -69,11 +70,46 @@ class CartRepository
         return $user->cart->cartItems()->where('product_id', $product->id)->delete();
     }
 
+    /**
+     * Update the quantity of the cart item
+     *
+     * @param Product $product
+     * @param integer $quantity
+     * @return boolean
+     */
     public function addQuantity(Product $product, int $quantity)
     {
         return auth()->user()->cart
                     ->cartItems()
                     ->where('product_id', $product->id)
                     ->update(['quantity' => $quantity]);
+    }
+
+    /**
+     * get current total price of the products in carts
+     *
+     * @return integer $price
+     */
+    public function getTotalPrice() : int
+    {
+        if (!$this->userCart) {
+            $this->userCart = auth()->user()->cart;
+        }
+
+        if (!$this->userCart) {
+            return 0;
+        }
+
+        $total = $this->calculateTotalPrice($this->userCart);
+
+        return intval($total);
+    }
+
+    public function calculateTotalPrice(Cart $cart)
+    {
+        return CartItem::where('cart_id', $cart->id)
+                ->join('products', 'products.id', '=', 'cart_items.product_id')
+                ->select(\DB::raw('SUM(cart_items.quantity*price) as total'))
+                ->first()->total;
     }
 }

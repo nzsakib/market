@@ -49,7 +49,7 @@
                     Total
                 </div>
                 <div class="col">
-                    500 Tk
+                    {{ $total }} Tk
                 </div>
             </div>
 

@@ -18,7 +18,10 @@ Route::group([
     Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
 });
 
-Route::get('cart', 'CartController@index');
-Route::post('cart', 'CartController@store');
-Route::delete('cart', 'CartController@destroy');
-Route::post('/cart/update', 'CartController@update');
+Route::name('cart.')->group(function () {
+    Route::get('cart', 'CartController@index');
+    Route::post('cart', 'CartController@store');
+    Route::delete('cart', 'CartController@destroy');
+    Route::post('cart/update', 'CartController@update');
+    Route::post('checkout', 'CartController@checkout')->name('checkout');
+});

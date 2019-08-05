@@ -85,4 +85,21 @@ class CartTest extends TestCase
 
         $this->assertEquals(4, $customer->cart->cartItems->fresh()[0]->quantity);
     }
+
+    /** @test */
+    public function customer_can_checkout_a_cart()
+    {
+        $this->withoutExceptionHandling();
+        $customer = CustomerFactory::withCartItem(1)->create();
+
+        $data = [
+            'name' => 'sakib',
+            'phone' => '01212121',
+            'address' => 'asdasdasd'
+        ];
+        $this->actingAs($customer)
+            ->post(route('cart.checkout'), $data);
+
+        $this->assertCount(1, $customer->orders->first()->orderItems);
+    }
 }
