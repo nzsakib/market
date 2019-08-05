@@ -41,15 +41,6 @@ class CustomerLoginTest extends TestCase
     }
 
     /** @test */
-    public function password_must_be_at_least_five_character()
-    {
-        $this->post('/login', [
-            'email' => 'john@doe.com',
-            'password' => '123'
-        ])->assertSessionHasErrors(['password']);
-    }
-
-    /** @test */
     public function user_can_not_login_with_invalid_credentials()
     {
         $customer = create(User::class, ['type' => User::TYPE_CUSTOMER]);
@@ -57,6 +48,6 @@ class CustomerLoginTest extends TestCase
         $this->post('/login', [
             'email' => $customer->email,
             'password' => 'notsecret'
-        ])->assertSessionHasErrors(['message']);
+        ])->assertSessionHasErrors();
     }
 }

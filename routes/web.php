@@ -8,9 +8,9 @@ Route::get('notify', 'RegistrationController@emailNotify')->name('register.notif
 Route::get('register', 'RegistrationController@show');
 Route::get('verify', 'VerificationController@verify');
 Route::get('success', 'VerificationController@success')->name('verify.success');
-Route::get('login', 'LoginController@showLoginForm')->name('login');
-Route::post('login', 'LoginController@login');
-Route::get('logout', 'LoginController@logout');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::get('logout', 'Auth\LoginController@logout');
 
 Route::group([
     'prefix' => 'customer'
