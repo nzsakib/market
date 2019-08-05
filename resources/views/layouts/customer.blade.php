@@ -17,16 +17,16 @@
     <div id="app">
         <div class="container">
             <div class="row">
-                <div class="col-3">
+                <div class="col-2">
                     <div class="greeting">
-                        Hello, {{ $user->name }}
+                        Hello, {{ auth()->user()->name }}
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">My Accounts</a>
+                            <a class="nav-link" href="{{ route('customer.profile') }}">My Accounts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">My Orders</a>
+                            <a class="nav-link" href="{{ route('customer.order') }}">My Orders</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Wishlist</a>
@@ -36,7 +36,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-8">
+                <div class="col-10">
                     @yield('content')
                 </div>
             </div>
