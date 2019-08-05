@@ -17,4 +17,15 @@ class ProductRepository
     {
         return $this->product->all();
     }
+
+    /**
+     * Find a product with product id
+     *
+     * @param integer $productId
+     * @return Product
+     */
+    public function find(int $productId) : Product
+    {
+        return $this->product->findOrFail($productId);
+    }
 }

@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\UseCase\UserCart;
 use Illuminate\Http\Request;
 use App\Repository\CartRepository;
+use App\Repository\ProductRepository;
 
 class CartController extends Controller
 {
     private $cart;
+    private $product;
 
-    public function __construct(CartRepository $cart)
+    public function __construct(CartRepository $cart, ProductRepository $product)
     {
         $this->middleware('auth');
         $this->cart = $cart;
+        $this->product = $product;
     }
 
     public function index()
@@ -30,9 +32,9 @@ class CartController extends Controller
             'product_id' => 'required'
         ]);
 
-        $product = Product::findOrFail($request->product_id);
-
-        $this->cart->add($product);
+        $this->cart->add(
+            $this->product->find($request->product_id)
+        );
 
         return back()->withMessage('Product added to cart.');
     }
@@ -43,9 +45,9 @@ class CartController extends Controller
             'product_id' => 'required'
         ]);
 
-        $product = Product::findOrFail($request->product_id);
-
-        $this->cart->remove($product);
+        $this->cart->remove(
+            $this->product->find($request->product_id)
+        );
 
         return back()->withMessage('Product removed from cart.');
     }

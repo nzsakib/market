@@ -14,6 +14,12 @@ class CartRepository
         $this->cart = $cart;
     }
 
+    /**
+     * get user cart with cart items
+     *
+     * @param void
+     * @return \App\Cart
+     */
     public function first()
     {
         $userCart = auth()->user()->cart;

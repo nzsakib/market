@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use Illuminate\Http\Request;
 use App\Repository\ProductRepository;
 
@@ -20,8 +19,10 @@ class ProductController extends Controller
         return view('home', compact('products'));
     }
 
-    public function show(Product $product)
+    public function show($product)
     {
+        $product = $this->product->find($product);
+
         return view('product.show', compact('product'));
     }
 }
