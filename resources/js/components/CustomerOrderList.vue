@@ -11,6 +11,7 @@
         <th>Total Price</th>
         <th>Status</th>
         <th>Order date</th>
+        <th>Details</th>
       </tr>
 
       <tr v-for="order in orders" :key="order.id">
@@ -20,6 +21,7 @@
           <button class="btn btn-outline-primary">{{ order.status }}</button>
         </td>
         <td>{{ order.created_at }}</td>
+        <td><a :href="'/customer/orders/' + order.id" class="btn btn-sm btn-info">Details</a></td>
       </tr>
     </table>
     <button

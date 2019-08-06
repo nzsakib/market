@@ -1948,6 +1948,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -20309,7 +20311,18 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(order.created_at))])
+                _c("td", [_vm._v(_vm._s(order.created_at))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-sm btn-info",
+                      attrs: { href: "/customer/orders/" + order.id }
+                    },
+                    [_vm._v("Details")]
+                  )
+                ])
               ])
             })
           ],
@@ -20359,7 +20372,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Status")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Order date")])
+      _c("th", [_vm._v("Order date")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Details")])
     ])
   }
 ]
