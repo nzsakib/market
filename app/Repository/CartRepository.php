@@ -36,7 +36,7 @@ class CartRepository
     {
         $userCart = $user->cart;
         if ($userCart) {
-            $userCart->load('cartItems');
+            $userCart->load('cartItems.product');
         }
 
         return $userCart;

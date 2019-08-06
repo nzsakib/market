@@ -22,10 +22,9 @@ class CartController extends Controller
 
     public function index()
     {
-        $cart = $this->cart->getCart(auth()->user());
         $total = $this->cart->getTotalPrice(auth()->user());
 
-        return view('customer.cart', compact('cart', 'total'));
+        return view('customer.cart', compact('total'));
     }
 
     public function store(Request $request)

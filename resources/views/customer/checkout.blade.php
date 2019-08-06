@@ -27,6 +27,11 @@
                 </div>
             </form>
 
+            <br>
+            <h3>Your Products Are</h3>
+            <hr>
+            <cart></cart>
+
         </div>
         <div class="col-4">
             <h3>Checkout Summery</h3>
