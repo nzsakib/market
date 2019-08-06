@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->integer('type');
             $table->string('phone');
             $table->string('gender')->nullable();
+            $table->string('profile_image')->default('default.png');
             $table->integer('wallet')->default(500);
             $table->rememberToken();
             $table->timestamps();
