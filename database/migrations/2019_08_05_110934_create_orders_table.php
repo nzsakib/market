@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->text('address');
+            $table->string('status')->default('pending'); // pending , approved, delivered
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

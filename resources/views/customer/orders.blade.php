@@ -13,7 +13,7 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->total }}</td>
-                    <td><button class="btn btn-outline-primary">Pending</button></td>
+                    <td><button class="btn btn-outline-primary">{{ $order->status }}</button></td>
                     <td>{{ $order->created_at->toFormattedDateString() }}</td>
                 </tr>
             @endforeach

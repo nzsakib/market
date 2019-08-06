@@ -14,6 +14,7 @@ $factory->define(Order::class, function (Faker $faker) {
         'total' => 300,
         'name' => $faker->name,
         'phone' => '0133333333',
-        'address' => '135/A, Bashundhara'
+        'address' => '135/A, Bashundhara',
+        'status' => 'pending'
     ];
 });
