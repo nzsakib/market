@@ -33,7 +33,7 @@ class CartController extends Controller
             'product_id' => 'required'
         ]);
 
-        $product = $this->product->find($request->product_id);
+        $product = $this->product->findOrFail($request->product_id);
 
         if ($product->quantity < 0) {
             return back()->withErrors("This product has no stocks remaining.");

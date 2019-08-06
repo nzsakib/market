@@ -28,4 +28,15 @@ class ProductRepository
     {
         return $this->product->find($productId);
     }
+
+    /**
+     * Find a product with product id or throw a 404 exception
+     *
+     * @param integer $productId
+     * @return Product
+     */
+    public function findOrFail(int $productId) : Product
+    {
+        return $this->product->findOrFail($productId);
+    }
 }
