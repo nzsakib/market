@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
+use App\Exceptions\InvalidFundException;
 
 class CartController extends Controller
 {
@@ -108,31 +109,10 @@ class CartController extends Controller
             return redirect('/');
         }
 
-        $totalPrice = $this->cart->calculateTotalPrice($user->cart);
-
-        if ($totalPrice > $user->wallet) {
-            return redirect()->route('cart.index')->withErrors('You don\'t have enough fund in your wallet.');
-        }
-        $user->wallet = $user->wallet - $totalPrice;
-        $user->save();
-
-        $cartItems = $user->cart->cartItems()->with('product')->get();
-
-        $order = $user->orders()->create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'total' => $totalPrice
-        ]);
-
-        foreach ($cartItems as $item) {
-            $order->orderItems()->create([
-                'product_id' => $item->product->id,
-                'price' => $item->product->price,
-                'quantity' => $item->quantity,
-            ]);
-            $item->product->quantity -= $item->quantity;
-            $item->product->save();
+        try {
+            $this->cart->placeOrder($request);
+        } catch (InvalidFundException $e) {
+            return redirect()->route('cart.index')->withErrors($e->getMessage());
         }
 
         return redirect()->route('customer.order');

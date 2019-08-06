@@ -5,10 +5,13 @@ namespace App\Repository;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\CartItem;
+use App\Exceptions\InvalidFundException;
+use Illuminate\Http\Request;
 
 class CartRepository
 {
     private $userCart;
+    private $user;
 
     public function __construct()
     {
@@ -111,5 +114,51 @@ class CartRepository
                 ->join('products', 'products.id', '=', 'cart_items.product_id')
                 ->select(\DB::raw('SUM(cart_items.quantity*price) as total'))
                 ->first()->total;
+    }
+
+    public function placeOrder(Request $request)
+    {
+        $this->user = auth()->user();
+        $this->userCart = $this->user->cart;
+
+        $totalPrice = $this->updateUserWallet();
+
+        $this->insertOrderItems($totalPrice, $request);
+    }
+
+    private function updateUserWallet() : int
+    {
+        $totalPrice = $this->calculateTotalPrice($this->userCart);
+
+        if ($totalPrice > $this->user->wallet) {
+            throw new InvalidFundException('You don\'t have anough fund in wallet. Plaease recharge.');
+        }
+
+        $this->user->wallet = $this->user->wallet - $totalPrice;
+        $this->user->save();
+
+        return $totalPrice;
+    }
+
+    private function insertOrderItems(int $totalPrice, Request $request)
+    {
+        $cartItems = $this->user->cart->cartItems()->with('product')->get();
+
+        $order = $this->user->orders()->create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'total' => $totalPrice
+        ]);
+
+        foreach ($cartItems as $item) {
+            $order->orderItems()->create([
+                'product_id' => $item->product->id,
+                'price' => $item->product->price,
+                'quantity' => $item->quantity,
+            ]);
+            $item->product->quantity -= $item->quantity;
+            $item->product->save();
+        }
     }
 }
