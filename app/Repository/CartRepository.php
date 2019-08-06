@@ -3,14 +3,21 @@
 namespace App\Repository;
 
 use App\Models\Cart;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\CartItem;
 use App\Exceptions\InvalidFundException;
-use Illuminate\Http\Request;
 
 class CartRepository
 {
+    /**
+     * @var Cart
+     */
     private $userCart;
+
+    /**
+     * @var User
+     */
     private $user;
 
     public function __construct()
@@ -24,9 +31,9 @@ class CartRepository
      * @param void
      * @return \App\Models\Cart
      */
-    public function first()
+    public function getCart(User $user)
     {
-        $this->userCart = $userCart = auth()->user()->cart;
+        $userCart = $user->cart;
         if ($userCart) {
             $userCart->load('cartItems');
         }
@@ -37,12 +44,12 @@ class CartRepository
     /**
      * Add a new product to cart
      *
+     * @param User $user
      * @param Product $product
      * @return \App\Models\CartItem
      */
-    public function add(Product $product)
+    public function add(User $user, Product $product)
     {
-        $user = auth()->user();
         $cart = $user->cart;
         if (!$cart) {
             $cart = $user->cart()->create();
@@ -63,26 +70,26 @@ class CartRepository
     /**
      * Remove a product from user cart
      *
+     * @param User $user
      * @param Product $product
      * @return boolean
      */
-    public function remove(Product $product)
+    public function remove(User $user, Product $product) : bool
     {
-        $user = auth()->user();
-
         return $user->cart->cartItems()->where('product_id', $product->id)->delete();
     }
 
     /**
      * Update the quantity of the cart item
      *
+     * @param User $user
      * @param Product $product
      * @param integer $quantity
      * @return boolean
      */
-    public function addQuantity(Product $product, int $quantity)
+    public function addQuantity(User $user, Product $product, int $quantity)
     {
-        return auth()->user()->cart
+        return $user->cart
                     ->cartItems()
                     ->where('product_id', $product->id)
                     ->update(['quantity' => $quantity]);
@@ -93,17 +100,13 @@ class CartRepository
      *
      * @return integer $price
      */
-    public function getTotalPrice() : int
+    public function getTotalPrice(User $user) : int
     {
-        if (!$this->userCart) {
-            $this->userCart = auth()->user()->cart;
-        }
-
-        if (!$this->userCart) {
+        if (!$user->cart) {
             return 0;
         }
 
-        $total = $this->calculateTotalPrice($this->userCart);
+        $total = $this->calculateTotalPrice($user->cart);
 
         return intval($total);
     }
@@ -116,38 +119,40 @@ class CartRepository
                 ->first()->total;
     }
 
-    public function placeOrder(Request $request)
+    public function placeOrder(User $user, array $data)
     {
         $this->user = auth()->user();
         $this->userCart = $this->user->cart;
 
-        $totalPrice = $this->updateUserWallet();
+        $totalPrice = $this->updateUserWallet($user);
 
-        $this->insertOrderItems($totalPrice, $request);
+        $this->insertOrderItems($user, $totalPrice, $data);
+
+        $this->emptyUserCart($user);
     }
 
-    private function updateUserWallet() : int
+    private function updateUserWallet(User $user) : int
     {
-        $totalPrice = $this->calculateTotalPrice($this->userCart);
+        $totalPrice = $this->calculateTotalPrice($user->cart);
 
-        if ($totalPrice > $this->user->wallet) {
+        if ($totalPrice > $user->wallet) {
             throw new InvalidFundException('You don\'t have anough fund in wallet. Plaease recharge.');
         }
 
-        $this->user->wallet = $this->user->wallet - $totalPrice;
-        $this->user->save();
+        $user->wallet = $this->user->wallet - $totalPrice;
+        $user->save();
 
         return $totalPrice;
     }
 
-    private function insertOrderItems(int $totalPrice, Request $request)
+    private function insertOrderItems(User $user, int $totalPrice, array $data)
     {
-        $cartItems = $this->user->cart->cartItems()->with('product')->get();
+        $cartItems = $user->cart->cartItems()->with('product')->get();
 
-        $order = $this->user->orders()->create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'address' => $request->address,
+        $order = $user->orders()->create([
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
             'total' => $totalPrice
         ]);
 

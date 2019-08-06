@@ -22,8 +22,8 @@ class CartController extends Controller
 
     public function index()
     {
-        $cart = $this->cart->first();
-        $total = $this->cart->getTotalPrice();
+        $cart = $this->cart->getCart(auth()->user());
+        $total = $this->cart->getTotalPrice(auth()->user());
 
         return view('customer.cart', compact('cart', 'total'));
     }
@@ -36,11 +36,11 @@ class CartController extends Controller
 
         $product = $this->product->findOrFail($request->product_id);
 
-        if ($product->quantity < 0) {
+        if ($product->quantity <= 0) {
             return back()->withErrors("This product has no stocks remaining.");
         }
 
-        $this->cart->add($product);
+        $this->cart->add(auth()->user(), $product);
 
         return back()->withMessage('Product added to cart.');
     }
@@ -52,6 +52,7 @@ class CartController extends Controller
         ]);
 
         $this->cart->remove(
+            auth()->user(),
             $this->product->find($request->product_id)
         );
 
@@ -72,6 +73,7 @@ class CartController extends Controller
         }
 
         $this->cart->addQuantity(
+            auth()->user(),
             $product,
             $request->quantity
         );
@@ -86,7 +88,7 @@ class CartController extends Controller
      */
     public function showCheckout()
     {
-        $total = $this->cart->getTotalPrice();
+        $total = $this->cart->getTotalPrice(auth()->user());
 
         return view('customer.checkout', compact('total'));
     }
@@ -110,7 +112,7 @@ class CartController extends Controller
         }
 
         try {
-            $this->cart->placeOrder($request);
+            $this->cart->placeOrder(auth()->user(), $request->all());
         } catch (InvalidFundException $e) {
             return redirect()->route('cart.index')->withErrors($e->getMessage());
         }
