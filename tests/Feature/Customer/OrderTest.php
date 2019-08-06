@@ -16,9 +16,14 @@ class OrderTest extends TestCase
         $this->withoutExceptionHandling();
         $customer = CustomerFactory::withOrder(1)->create();
         $order = $customer->orders->first();
-        $this->actingAs($customer)
-            ->get(route('customer.orderDetails', $order->id))
-            ->assertStatus(200)
-            ->assertSee($order->name);
+
+        $this->actingAs($customer);
+        $response = $this->withHeaders([
+            'Accept' => 'application/json'
+        ])->get(route('customer.orderDetails', $order->id))->assertStatus(200);
+
+        $result = json_decode($response->getContent());
+
+        $this->assertCount(10, (array) $result);
     }
 }
