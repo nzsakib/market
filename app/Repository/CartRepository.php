@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use DB;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Product;
@@ -119,16 +120,30 @@ class CartRepository
                 ->first()->total;
     }
 
+    /**
+     * Place an order for the given user
+     *
+     * @param User $user
+     * @param array $data
+     * @return void
+     */
     public function placeOrder(User $user, array $data)
     {
-        $this->user = auth()->user();
-        $this->userCart = $this->user->cart;
+        DB::beginTransaction();
+        try {
+            $totalPrice = $this->updateUserWallet($user);
 
-        $totalPrice = $this->updateUserWallet($user);
+            $this->insertOrderItems($user, $totalPrice, $data);
 
-        $this->insertOrderItems($user, $totalPrice, $data);
+            $this->emptyUserCart($user);
 
-        $this->emptyUserCart($user);
+            DB::commit();
+        } catch (InvalidFundException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
     }
 
     private function updateUserWallet(User $user) : int
@@ -139,7 +154,7 @@ class CartRepository
             throw new InvalidFundException('You don\'t have anough fund in wallet. Plaease recharge.');
         }
 
-        $user->wallet = $this->user->wallet - $totalPrice;
+        $user->wallet = $user->wallet - $totalPrice;
         $user->save();
 
         return $totalPrice;
@@ -165,5 +180,16 @@ class CartRepository
             $item->product->quantity -= $item->quantity;
             $item->product->save();
         }
+    }
+
+    /**
+     * Empty out the given user cart
+     *
+     * @param User $user
+     * @return boolean
+     */
+    public function emptyUserCart(User $user) : bool
+    {
+        return $user->cart->cartItems()->delete();
     }
 }
