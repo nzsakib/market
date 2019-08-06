@@ -17,6 +17,7 @@ Route::group([
 ], function () {
     Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
     Route::get('orders', 'OrdersController@index')->name('customer.order');
+    Route::get('orders/{order}', 'OrdersController@show')->name('customer.orderDetails');
 });
 
 Route::name('cart.')->group(function () {

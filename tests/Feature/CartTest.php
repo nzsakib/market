@@ -98,7 +98,8 @@ class CartTest extends TestCase
             'address' => 'asdasdasd'
         ];
         $this->actingAs($customer)
-            ->post(route('cart.checkout'), $data);
+            ->post(route('cart.checkout'), $data)
+            ->assertRedirect(route('customer.order'));
 
         $this->assertCount(1, $customer->orders->first()->orderItems);
         $this->assertEquals(470, $customer->fresh()->wallet);

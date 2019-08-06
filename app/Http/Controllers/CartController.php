@@ -129,11 +129,12 @@ class CartController extends Controller
             $order->orderItems()->create([
                 'product_id' => $item->product->id,
                 'price' => $item->product->price,
+                'quantity' => $item->quantity,
             ]);
             $item->product->quantity -= $item->quantity;
             $item->product->save();
         }
 
-        return redirect()->route('customer.profile');
+        return redirect()->route('customer.order');
     }
 }

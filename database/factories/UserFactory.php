@@ -25,5 +25,6 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
         'type' => 1,
         'wallet' => 500,
+        'phone' => '013131315654',
     ];
 });

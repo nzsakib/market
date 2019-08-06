@@ -16,7 +16,8 @@ class RegisterCustomer
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:5'
+            'password' => 'required|confirmed|min:5',
+            'phone' => 'required',
         ]);
 
         $customer = User::create([
@@ -25,6 +26,7 @@ class RegisterCustomer
             'password' => bcrypt($request->password),
             'type' => User::TYPE_CUSTOMER,
             'wallet' => 500,
+            'phone' => $request->phone,
         ]);
 
         event(new CustomerRegistered($customer));

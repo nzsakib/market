@@ -12,4 +12,11 @@ class OrdersController extends Controller
 
         return view('customer.orders', compact('orders'));
     }
+
+    public function show($orderId)
+    {
+        $order = auth()->user()->orders()->findOrFail($orderId);
+
+        return view('customer.orderDetails', compact('order'));
+    }
 }

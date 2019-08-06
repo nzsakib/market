@@ -21,7 +21,8 @@ class CustomerRegistrationTest extends TestCase
             'name' => 'john doe',
             'email' => 'test@gmail.com',
             'password' => '123456',
-            'password_confirmation' => '123456'
+            'password_confirmation' => '123456',
+            'phone' => '01917169307'
         ];
 
         Mail::fake();

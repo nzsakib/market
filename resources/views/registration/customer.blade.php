@@ -26,6 +26,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="email">Phone</label>
+                    <input type="text" name="phone" class="form-control" value="{{ old('phone') }}">
+                </div>
+
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" class="form-control">
                 </div>
