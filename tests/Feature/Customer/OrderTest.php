@@ -20,7 +20,7 @@ class OrderTest extends TestCase
         $this->actingAs($customer);
         $response = $this->withHeaders([
             'Accept' => 'application/json'
-        ])->get(route('customer.orderDetails', $order->id))->assertStatus(200);
+        ])->get("/api/customer/orders/{$order->id}")->assertStatus(200);
 
         $result = json_decode($response->getContent());
 

@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             order: {},
-            path: '/customer/orders/',
+            path: '/api/customer/orders/',
         };
     },
 

@@ -42,7 +42,7 @@ export default {
       orders: [],
       meta: null,
       links: null,
-      path: "/customer/orders",
+      path: "/api/customer/orders",
       loading: false,
     };
   },

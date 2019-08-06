@@ -1883,7 +1883,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       order: {},
-      path: '/customer/orders/'
+      path: '/api/customer/orders/'
     };
   },
   methods: {
@@ -1954,7 +1954,7 @@ __webpack_require__.r(__webpack_exports__);
       orders: [],
       meta: null,
       links: null,
-      path: "/customer/orders",
+      path: "/api/customer/orders",
       loading: false
     };
   },
