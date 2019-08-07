@@ -4,16 +4,18 @@ Route::get('/', 'ProductController@index');
 Route::get('/product/{product}', 'ProductController@show')->name('product.details');
 
 Route::post('register', 'RegistrationController@register');
-Route::get('notify', 'RegistrationController@emailNotify')->name('register.notify');
 Route::get('register', 'RegistrationController@show');
-Route::get('verify', 'VerificationController@verify');
-Route::get('success', 'VerificationController@success')->name('verify.success');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout');
 
+Route::get('verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('notice', 'Auth\VerificationController@show')->name('verification.notice');
+Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+
 Route::group([
-    'prefix' => 'customer'
+    'prefix' => 'customer',
+    'middleware' => 'verified'
 ], function () {
     Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
     Route::get('orders', 'OrdersController@index')->name('customer.order');

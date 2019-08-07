@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use App\Models\User;
 
 class VerificationController extends Controller
 {
@@ -37,5 +38,12 @@ class VerificationController extends Controller
         $this->middleware('auth');
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+
+    public function redirectPath()
+    {
+        if (auth()->user()->type == User::TYPE_CUSTOMER) {
+            return route('customer.profile');
+        }
     }
 }

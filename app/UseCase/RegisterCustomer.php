@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\CustomerRegistered;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterCustomer
 {
@@ -29,7 +30,7 @@ class RegisterCustomer
             'phone' => $request->phone,
         ]);
 
-        event(new CustomerRegistered($customer));
+        event(new Registered($customer));
 
         return $customer;
     }

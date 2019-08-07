@@ -67,8 +67,8 @@ class CartTest extends TestCase
         $customer = CustomerFactory::withCartItem(3)->create();
 
         $this->actingAs($customer)
-            ->get('/cart')
-            ->assertSee($customer->cart->cartItems[0]->product->title);
+            ->get('/api/cart')
+            ->assertStatus(200);
     }
 
     /** @test */
