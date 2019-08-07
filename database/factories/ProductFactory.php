@@ -10,7 +10,7 @@ $factory->define(Product::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'description' => $faker->paragraph,
-        'image' => 'https://placeimg.com/600/600/arch',
+        // 'image' => 'https://placeimg.com/600/600/arch',
         'user_id' => function () {
             return factory(User::class);
         },

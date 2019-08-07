@@ -8,6 +8,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
+    /**
+     * @var Product
+     */
     private $product;
 
     public function __construct(Product $product)
@@ -42,8 +45,27 @@ class ProductRepository
         return $this->product->findOrFail($productId);
     }
 
+    /**
+     * Get all products of a vendor
+     *
+     * @param User $user
+     * @param integer $perPage
+     * @return LengthAwarePaginator
+     */
     public function getVendorProducts(User $user, int $perPage = 15) : LengthAwarePaginator
     {
         return $user->products()->paginate($perPage);
+    }
+
+    public function create(User $user, array $data)
+    {
+        return $this->product->create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'quantity' => $data['quantity'],
+            'status' => isset($data['status']) ?? 'pending',
+            'user_id' => $user->id
+        ]);
     }
 }

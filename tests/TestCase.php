@@ -17,4 +17,13 @@ abstract class TestCase extends BaseTestCase
 
         return $user;
     }
+
+    public function vendorSignIn($user = null)
+    {
+        $user = $user ?? create(User::class, ['type' => User::TYPE_VENDOR]);
+
+        $this->actingAs($user);
+
+        return $user;
+    }
 }

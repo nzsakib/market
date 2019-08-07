@@ -22,4 +22,26 @@ class VendorProductTest extends TestCase
 
         $this->assertCount(2, $result);
     }
+
+    /** @test */
+    public function vendor_can_create_a_product()
+    {
+        $this->withoutExceptionHandling();
+
+        $data = [
+            'title' => 'lorem ipsum',
+            'description' => 'product description',
+            'quantity' => 1,
+            'price' => 200,
+            // 'images' =>
+        ];
+
+        $this->vendorSignIn();
+
+        $this->post('/api/vendor/product', $data)->assertStatus(200);
+
+        $this->assertDatabaseHas('products', [
+            'title' => 'lorem ipsum'
+        ]);
+    }
 }

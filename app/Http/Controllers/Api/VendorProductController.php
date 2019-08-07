@@ -9,6 +9,9 @@ use App\Http\Resources\ProductResource;
 
 class VendorProductController extends Controller
 {
+    /**
+     * @var ProductRepository
+     */
     private $productRepo;
 
     public function __construct(ProductRepository $product)
@@ -26,5 +29,29 @@ class VendorProductController extends Controller
         $products = $this->productRepo->getVendorProducts(auth()->user());
 
         return ProductResource::collection($products);
+    }
+
+    /**
+     * Create a new product by the vendor
+     *
+     * @param Request $request
+     * @return
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'quantity' => 'required|int',
+            'price' => 'required',
+        ]);
+
+        $product = $this->productRepo->create(auth()->user(), $request->all());
+
+        return response([
+            'success' => true,
+            'message' => 'Product was created',
+            'product' => $product
+        ]);
     }
 }
