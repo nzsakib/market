@@ -2155,11 +2155,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     updateProfileImage: function updateProfileImage() {
+      var _this2 = this;
+
       var formData = new FormData();
       formData.append('photo', this.selectedPhoto, this.selectedPhoto.name);
       axios.post('/api/customer/profile/photo', formData).then(function (res) {
         if (res.data.success) {
-          console.log('success');
+          _this2.user.profile_image = res.data.path;
         }
       });
     },
@@ -2169,10 +2171,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     axios.get('/api/customer/profile').then(function (res) {
-      _this2.user = res.data;
+      _this3.user = res.data;
     });
   }
 });
@@ -20851,7 +20853,7 @@ var render = function() {
         _vm._v(" "),
         _c("img", {
           staticClass: "img-fluid",
-          attrs: { src: "/" + _vm.user.profile_image, alt: "" }
+          attrs: { src: "/storage" + _vm.user.profile_image, alt: "" }
         })
       ]),
       _vm._v(" "),

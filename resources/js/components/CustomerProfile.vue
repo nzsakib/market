@@ -33,7 +33,7 @@
     <div class="row">
       <div class="col-3">
         <p>Your Profile photo</p>
-        <img :src="'/' + user.profile_image" alt class="img-fluid" />
+        <img :src="'/storage' + user.profile_image" alt class="img-fluid" />
       </div>
       <div class="col-9">
         <form action="/customer/update-picture" method="POST" enctype="multipart/form-data">
@@ -96,7 +96,7 @@ export default {
             axios.post('/api/customer/profile/photo', formData)
                 .then(res => {
                     if (res.data.success) {
-                        console.log('success');
+                        this.user.profile_image = res.data.path;
                     }
                 });
         },

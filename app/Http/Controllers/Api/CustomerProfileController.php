@@ -44,13 +44,13 @@ class CustomerProfileController extends Controller
         $this->validate($request, [
             'photo' => 'file|required'
         ]);
-        auth()->loginUsingId(11);
 
-        $this->userRepo->updateImage(auth()->user(), $request->photo);
+        $url = $this->userRepo->updateImage(auth()->user(), $request->photo);
 
         return response([
             'success' => true,
-            'message' => 'Image Updated'
+            'message' => 'Image Updated',
+            'path' => $url
         ]);
     }
 }

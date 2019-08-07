@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->integer('type');
             $table->string('phone');
             $table->string('gender')->nullable();
-            $table->string('profile_image')->default('default.png');
+            $table->string('profile_image')->default('http://market.test/storage/images/profile/default.png');
             $table->integer('wallet')->default(500);
             $table->rememberToken();
             $table->timestamps();
