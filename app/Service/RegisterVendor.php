@@ -1,14 +1,13 @@
 <?php
 
-namespace App\UseCase;
+namespace App\Service;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Events\CustomerRegistered;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Auth\Events\Registered;
 
-class RegisterCustomer
+class RegisterVendor
 {
     use ValidatesRequests;
 
@@ -21,17 +20,17 @@ class RegisterCustomer
             'phone' => 'required',
         ]);
 
-        $customer = User::create([
+        $vendor = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'type' => User::TYPE_CUSTOMER,
+            'type' => User::TYPE_VENDOR,
             'wallet' => 500,
             'phone' => $request->phone,
         ]);
 
-        event(new Registered($customer));
+        event(new Registered($vendor));
 
-        return $customer;
+        return $vendor;
     }
 }

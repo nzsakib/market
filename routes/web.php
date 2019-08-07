@@ -15,7 +15,7 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 Route::group([
     'prefix' => 'customer',
-    'middleware' => 'verified'
+    'middleware' => ['auth', 'verified', 'customer']
 ], function () {
     Route::get('profile', 'CustomerProfileController@index')->name('customer.profile');
     Route::get('orders', 'OrdersController@index')->name('customer.order');
@@ -29,4 +29,11 @@ Route::name('cart.')->group(function () {
     Route::post('cart/update', 'CartController@update');
     Route::get('checkout', 'CartController@showCheckout')->name('checkout');
     Route::post('checkout', 'CartController@checkout');
+});
+
+// Vendor
+Route::group([
+    'prefix' => 'vendor'
+], function () {
+    Route::get('/', 'VendorController@index')->name('vendor.profile');
 });

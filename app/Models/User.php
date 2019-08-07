@@ -70,6 +70,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if ($this->type == self::TYPE_CUSTOMER) {
             return route('customer.profile');
+        } elseif ($this->type == self::TYPE_VENDOR) {
+            return route('vendor.profile');
         }
     }
 }

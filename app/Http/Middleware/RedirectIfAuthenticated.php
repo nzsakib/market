@@ -22,6 +22,8 @@ class RedirectIfAuthenticated
             $user = Auth::user();
             if ($user->type == User::TYPE_CUSTOMER) {
                 return redirect()->route('customer.profile');
+            } elseif ($user->type == User::TYPE_VENDOR) {
+                return redirect()->route('vendor.profile');
             }
         }
 

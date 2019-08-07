@@ -45,8 +45,11 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        if (auth()->user()->type === User::TYPE_CUSTOMER) {
+        $user = auth()->user();
+        if ($user->type === User::TYPE_CUSTOMER) {
             return route('customer.profile');
+        } elseif ($user->type == User::TYPE_VENDOR) {
+            return route('vendor.profile');
         }
     }
 }
