@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Repository\ImageRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository
@@ -13,9 +14,15 @@ class ProductRepository
      */
     private $product;
 
-    public function __construct(Product $product)
+    /**
+     * @var ImageRepository
+     */
+    private $imageRepo;
+
+    public function __construct(Product $product, ImageRepository $image)
     {
         $this->product = $product;
+        $this->imageRepo = $image;
     }
 
     public function all()
@@ -57,9 +64,16 @@ class ProductRepository
         return $user->products()->paginate($perPage);
     }
 
+    /**
+     * Create a new product for vendor
+     *
+     * @param User $user
+     * @param array $data
+     * @return Product
+     */
     public function create(User $user, array $data)
     {
-        return $this->product->create([
+        $product = $this->product->create([
             'title' => $data['title'],
             'description' => $data['description'],
             'price' => $data['price'],
@@ -67,5 +81,25 @@ class ProductRepository
             'status' => isset($data['status']) ?? 'pending',
             'user_id' => $user->id
         ]);
+
+        $this->insertImages($product, $data['images']);
+
+        return $product;
+    }
+
+    /**
+     * Upload and insert image to image gallery
+     *
+     * @param Product $product
+     * @param array $images
+     * @return void
+     */
+    public function insertImages(Product $product, array $images)
+    {
+        foreach ($images as $image) {
+            $path = $this->imageRepo->upload($image, 'images/product');
+
+            $product->images()->create(['image_path' => $path]);
+        }
     }
 }

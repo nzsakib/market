@@ -5,6 +5,7 @@ namespace Tests\Feature\Vendor;
 use Tests\TestCase;
 use Facades\Tests\Setup\VendorFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
 
 class VendorProductTest extends TestCase
 {
@@ -33,7 +34,9 @@ class VendorProductTest extends TestCase
             'description' => 'product description',
             'quantity' => 1,
             'price' => 200,
-            // 'images' =>
+            'images' => [
+                UploadedFile::fake()->image('avatar.jpg'),
+            ]
         ];
 
         $this->vendorSignIn();
@@ -43,5 +46,7 @@ class VendorProductTest extends TestCase
         $this->assertDatabaseHas('products', [
             'title' => 'lorem ipsum'
         ]);
+
+        $this->assertCount(1, auth()->user()->products->first()->images);
     }
 }

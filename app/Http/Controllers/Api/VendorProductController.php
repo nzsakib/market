@@ -44,6 +44,7 @@ class VendorProductController extends Controller
             'description' => 'required',
             'quantity' => 'required|int',
             'price' => 'required',
+            'images' => 'required|array'
         ]);
 
         $product = $this->productRepo->create(auth()->user(), $request->all());
