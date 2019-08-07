@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Repository\UserRepository;
+use App\Http\Controllers\Controller;
+use App\Exceptions\PasswordDoesNotMatch;
 
 class CustomerProfileController extends Controller
 {
     public function __construct(UserRepository $user)
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
         $this->userRepo = $user;
     }
 
@@ -39,6 +40,12 @@ class CustomerProfileController extends Controller
         ]);
     }
 
+    /**
+     * Update user profile photo
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function updatePhoto(Request $request)
     {
         $this->validate($request, [
@@ -51,6 +58,28 @@ class CustomerProfileController extends Controller
             'success' => true,
             'message' => 'Image Updated',
             'path' => $url
+        ]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->validate($request, [
+            'current_password' => 'required',
+            'new_password' => 'required|confirmed'
+        ]);
+
+        try {
+            $this->userRepo->updatePassword(auth()->user(), $request->all());
+        } catch (PasswordDoesNotMatch $e) {
+            return response([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+
+        return response([
+            'success' => true,
+            'message' => 'Password Updated'
         ]);
     }
 }

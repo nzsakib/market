@@ -54,15 +54,15 @@
     <form action="/customer/password-change" method="POST">
       <div class="form-group">
         <label for="current">Your Current Password</label>
-        <input type="password" id="current" name="current" class="form-control" />
+        <input type="password" id="current" name="current_password" class="form-control" v-model="password.current_password" required/>
       </div>
       <div class="form-group">
         <label for="new">New Password</label>
-        <input type="password" id="new" name="newpassword" class="form-control" />
+        <input type="password" id="new" name="new_password" class="form-control" v-model="password.new_password" required/>
       </div>
       <div class="form-group">
         <label for="current">Confirm New Password</label>
-        <input type="password" id="current" name="newpassword_confirmation" class="form-control" />
+        <input type="password" id="current" name="new_password_confirmation" class="form-control" v-model="password.new_password_confirmation" required/>
       </div>
 
       <button class="btn btn-info" @click.prevent="updatePassword">Save</button>
@@ -76,7 +76,8 @@ export default {
     data() {
         return {
             user: {},
-            selectedPhoto: null
+            selectedPhoto: null,
+            password: {}
         };
     },
 
@@ -102,7 +103,16 @@ export default {
         },
 
         updatePassword() {
-
+          axios.post('/api/customer/profile/password', this.password)
+            .then(res => {
+              if (res.data.success) {
+                console.log('Password Updated');
+                this.password = {};
+              } else {
+                console.log(res.data);
+                this.password = {};
+              }
+            });
         },
 
         onFileChanged(event) {

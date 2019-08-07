@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Models\User;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
+use App\Exceptions\PasswordDoesNotMatch;
 
 class UserRepository
 {
@@ -49,5 +51,16 @@ class UserRepository
         $user->save();
 
         return $path;
+    }
+
+    public function updatePassword(User $user, array $data)
+    {
+        if (!Hash::check($data['current_password'], $user->password)) {
+            throw new PasswordDoesNotMatch('Current password does not match!!');
+        }
+
+        $user->password = bcrypt($data['new_password']);
+
+        return $user->save();
     }
 }

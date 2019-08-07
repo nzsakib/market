@@ -2141,7 +2141,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       user: {},
-      selectedPhoto: null
+      selectedPhoto: null,
+      password: {}
     };
   },
   methods: {
@@ -2165,16 +2166,28 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    updatePassword: function updatePassword() {},
+    updatePassword: function updatePassword() {
+      var _this3 = this;
+
+      axios.post('/api/customer/profile/password', this.password).then(function (res) {
+        if (res.data.success) {
+          console.log('Password Updated');
+          _this3.password = {};
+        } else {
+          console.log(res.data);
+          _this3.password = {};
+        }
+      });
+    },
     onFileChanged: function onFileChanged(event) {
       this.selectedPhoto = event.target.files[0];
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     axios.get('/api/customer/profile').then(function (res) {
-      _this3.user = res.data;
+      _this4.user = res.data;
     });
   }
 });
@@ -20910,11 +20923,106 @@ var render = function() {
       "form",
       { attrs: { action: "/customer/password-change", method: "POST" } },
       [
-        _vm._m(0),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "current" } }, [
+            _vm._v("Your Current Password")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password.current_password,
+                expression: "password.current_password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              id: "current",
+              name: "current_password",
+              required: ""
+            },
+            domProps: { value: _vm.password.current_password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.password, "current_password", $event.target.value)
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "new" } }, [_vm._v("New Password")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password.new_password,
+                expression: "password.new_password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              id: "new",
+              name: "new_password",
+              required: ""
+            },
+            domProps: { value: _vm.password.new_password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.password, "new_password", $event.target.value)
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
-        _vm._m(2),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "current" } }, [
+            _vm._v("Confirm New Password")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.password.new_password_confirmation,
+                expression: "password.new_password_confirmation"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              id: "current",
+              name: "new_password_confirmation",
+              required: ""
+            },
+            domProps: { value: _vm.password.new_password_confirmation },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.password,
+                  "new_password_confirmation",
+                  $event.target.value
+                )
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
         _c(
           "button",
@@ -20933,55 +21041,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "current" } }, [
-        _vm._v("Your Current Password")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "password", id: "current", name: "current" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "new" } }, [_vm._v("New Password")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "password", id: "new", name: "newpassword" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "current" } }, [
-        _vm._v("Confirm New Password")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: {
-          type: "password",
-          id: "current",
-          name: "newpassword_confirmation"
-        }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
