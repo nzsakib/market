@@ -27,6 +27,7 @@ class RegisterCustomer
             'type' => User::TYPE_CUSTOMER,
             'wallet' => 500,
             'phone' => $request->phone,
+            'address' => $request->address
         ]);
 
         event(new CustomerRegistered($customer));

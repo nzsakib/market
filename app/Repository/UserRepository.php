@@ -28,6 +28,7 @@ class UserRepository
             'name' => $data['name'],
             'phone' => $data['phone'],
             'gender' => $data['gender'],
+            'address' => $data['address'],
         ]);
 
         return $user;
