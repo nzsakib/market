@@ -36,4 +36,5 @@ Route::group([
     'prefix' => 'vendor'
 ], function () {
     Route::get('/', 'VendorController@index')->name('vendor.profile');
+    Route::get('/products', 'VendorProductController@index')->name('vendor.product.index');
 });

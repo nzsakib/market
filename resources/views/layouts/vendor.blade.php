@@ -24,10 +24,10 @@
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('customer.profile') }}">My Accounts</a>
+                            <a class="nav-link" href="{{ route('vendor.profile') }}">My Accounts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('customer.order') }}">My Orders</a>
+                            <a class="nav-link" href="{{ route('vendor.product.index') }}">List Products</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Wishlist</a>

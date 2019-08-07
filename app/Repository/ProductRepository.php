@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Models\User;
 use App\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
@@ -38,5 +40,10 @@ class ProductRepository
     public function findOrFail(int $productId) : Product
     {
         return $this->product->findOrFail($productId);
+    }
+
+    public function getVendorProducts(User $user, int $perPage = 15) : LengthAwarePaginator
+    {
+        return $user->products()->paginate($perPage);
     }
 }
