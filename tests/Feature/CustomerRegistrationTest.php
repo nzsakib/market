@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Tests\TestCase;
-use App\Mail\VerifyEmailAddress;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CustomerRegistrationTest extends TestCase
@@ -25,17 +25,15 @@ class CustomerRegistrationTest extends TestCase
             'phone' => '01917169307'
         ];
 
-        Mail::fake();
-        $this->post('/register', $data)->assertRedirect(route('register.notify'));
+        Notification::fake();
+        $this->post('/register', $data)->assertRedirect(route('verification.notice'));
 
         $this->assertDatabaseHas('users', [
             'email' => $data['email'],
             'type' => User::TYPE_CUSTOMER,
         ]);
 
-        Mail::assertSent(VerifyEmailAddress::class, function ($mail) use ($data) {
-            return  $mail->hasTo($data['email']);
-        });
+        Notification::assertSentTo(User::where('email', $data['email'])->first(), VerifyEmail::class);
     }
 
     /** @test */
@@ -71,18 +69,5 @@ class CustomerRegistrationTest extends TestCase
         ];
 
         $this->post('/register', $data)->assertSessionHasErrors(['password']);
-    }
-
-    /** @test */
-    public function customer_can_verify_email_address()
-    {
-        $this->withoutExceptionHandling();
-
-        $user = create(User::class, ['email_verified_at' => null]);
-        $token = $user->generateToken()->token;
-
-        $this->get("/verify?token={$token}");
-
-        $this->assertNotNull($user->fresh()->email_verified_at);
     }
 }
