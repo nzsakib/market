@@ -33,6 +33,12 @@
                             <a class="nav-link" href="{{ route('vendor.productAdd') }}">Add a Product</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('vendor.productAdd') }}">New Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('vendor.productAdd') }}">Sold Products</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>
                         </li>
                     </ul>
