@@ -2344,6 +2344,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -21432,7 +21434,18 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(product.quantity))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(product.status))])
+            _c("td", [_vm._v(_vm._s(product.status))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-outline-primary btn-sm",
+                  attrs: { href: "/vendor/products/" + product.id }
+                },
+                [_vm._v("Details")]
+              )
+            ])
           ])
         })
       ],
@@ -21474,7 +21487,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Total Quantity")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Status")])
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Details")])
     ])
   }
 ]

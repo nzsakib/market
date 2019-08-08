@@ -28,4 +28,9 @@ class VendorController extends Controller
     {
         return view('vendor.addProduct');
     }
+
+    public function productDetails($productId)
+    {
+        return view('vendor.productDetails', compact('productId'));
+    }
 }

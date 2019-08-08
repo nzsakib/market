@@ -38,4 +38,5 @@ Route::group([
     Route::get('/', 'VendorController@index')->name('vendor.profile');
     Route::get('/products', 'VendorController@allProducts')->name('vendor.productList');
     Route::get('/products/add', 'VendorController@addProduct')->name('vendor.productAdd');
+    Route::get('/products/{productId}', 'VendorController@productDetails')->name('vendor.productDetails');
 });

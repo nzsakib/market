@@ -7,6 +7,7 @@
         <th>Price</th>
         <th>Total Quantity</th>
         <th>Status</th>
+        <th>Details</th>
       </tr>
 
       <tr v-for="product in products" :key="product.id">
@@ -15,6 +16,7 @@
         <td>{{ product.price }}</td>
         <td>{{ product.quantity }}</td>
         <td>{{ product.status }}</td>
+        <td><a :href="'/vendor/products/' + product.id" class="btn btn-outline-primary btn-sm">Details</a></td>
       </tr>
     </table>
 
