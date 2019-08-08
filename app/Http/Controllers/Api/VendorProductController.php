@@ -66,10 +66,11 @@ class VendorProductController extends Controller
             'images' => 'sometimes|array'
         ]);
 
-        $product = $this->productRepo->update(
-            $this->productRepo->findOrFail($productId),
-            $request->all()
-        );
+        $product = $this->productRepo->findOrFail($productId);
+
+        $this->authorize('update', $product);
+
+        $product = $this->productRepo->update($product, $request->all());
 
         return response([
             'success' => true,

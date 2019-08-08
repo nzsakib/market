@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Facades\Tests\Setup\VendorFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
+use App\Models\Product;
 
 class VendorProductTest extends TestCase
 {
@@ -29,22 +30,14 @@ class VendorProductTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $data = [
-            'title' => 'lorem ipsum',
-            'description' => 'product description',
-            'quantity' => 1,
-            'price' => 200,
-            'images' => [
-                UploadedFile::fake()->image('avatar.jpg'),
-            ]
-        ];
+        $data = $this->getProductData();
 
         $this->vendorSignIn();
 
         $this->post('/api/vendor/product', $data)->assertStatus(200);
 
         $this->assertDatabaseHas('products', [
-            'title' => 'lorem ipsum'
+            'title' => $data['title']
         ]);
 
         $this->assertCount(1, auth()->user()->products->first()->images);
@@ -58,15 +51,7 @@ class VendorProductTest extends TestCase
         $vendor = VendorFactory::withProduct(1)->create();
         $product = $vendor->products->first();
 
-        $data = [
-            'title' => 'changed title',
-            'description' => 'changed',
-            'quantity' => 10,
-            'price' => 100,
-            'images' => [
-                UploadedFile::fake()->image('img.png')
-            ]
-        ];
+        $data = $this->getProductData();
 
         $this->actingAs($vendor)
             ->patch("/api/vendor/product/{$product->id}", $data)
@@ -81,5 +66,28 @@ class VendorProductTest extends TestCase
         ]);
 
         $this->assertCount(1, $product->images);
+    }
+
+    /** @test */
+    public function vendor_can_not_update_other_vendors_product()
+    {
+        $product = create(Product::class);
+
+        $this->vendorSignIn();
+
+        $this->patch("/api/vendor/product/{$product->id}", $this->getProductData())->assertStatus(403);
+    }
+
+    protected function getProductData() : array
+    {
+        return [
+            'title' => 'changed title',
+            'description' => 'changed',
+            'quantity' => 10,
+            'price' => 100,
+            'images' => [
+                UploadedFile::fake()->image('img.png')
+            ]
+        ];
     }
 }
