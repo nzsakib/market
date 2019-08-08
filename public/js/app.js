@@ -2261,6 +2261,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['productid'],
   data: function data() {
@@ -21269,6 +21274,20 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      { staticClass: "row images" },
+      _vm._l(_vm.product.images, function(image) {
+        return _c("div", { key: image.id, staticClass: "col-3" }, [
+          _c("img", {
+            staticClass: "img-fluid",
+            attrs: { src: image.image_path, alt: "" }
+          })
+        ])
+      }),
+      0
+    ),
+    _vm._v(" "),
     _c("form", { attrs: { action: "", method: "POST" } }, [
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),

@@ -1,5 +1,10 @@
 <template>
     <div>
+        <div class="row images">
+            <div class="col-3" v-for="image in product.images" :key="image.id">
+                <img :src="image.image_path" alt="" class="img-fluid">
+            </div>
+        </div>
         <form action="" method="POST">
             <div class="form-group">
                 <label for="title">Title</label>
