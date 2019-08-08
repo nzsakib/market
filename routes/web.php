@@ -10,7 +10,7 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout');
 
 Route::get('verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
-Route::get('notice', 'Auth\VerificationController@show')->name('verification.notice');
+Route::get('notice', 'RegistrationController@notifyEmail')->name('verification.notice');
 Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 
 Route::group([

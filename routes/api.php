@@ -15,4 +15,5 @@ Route::apiResource('vendor/product', 'Api\VendorProductController', [
     'as' => 'vendor',
     'middleware' => 'auth'
 ]);
-// get vendor products
+
+Route::delete('vendor/image', 'Api\VendorProductController@deleteImage');

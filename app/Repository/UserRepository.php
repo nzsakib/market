@@ -44,7 +44,7 @@ class UserRepository
     public function updateImage(User $user, UploadedFile $image) : string
     {
         if ($user->profile_image !== 'http://market.test/storage/images/profile/default.png') {
-            $this->imageRepo->delete($user->profile_image);
+            $this->imageRepo->deleteFromDisk($user->profile_image);
         }
         $path = $this->imageRepo->upload($image);
 

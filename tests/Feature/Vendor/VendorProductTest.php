@@ -7,6 +7,7 @@ use Facades\Tests\Setup\VendorFactory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class VendorProductTest extends TestCase
 {
@@ -33,7 +34,7 @@ class VendorProductTest extends TestCase
         $data = $this->getProductData();
 
         $this->vendorSignIn();
-
+        Storage::fake('public');
         $this->post('/api/vendor/product', $data)->assertStatus(200);
 
         $this->assertDatabaseHas('products', [
@@ -46,13 +47,11 @@ class VendorProductTest extends TestCase
     /** @test */
     public function vendor_can_update_product()
     {
-        $this->withoutExceptionHandling();
-
         $vendor = VendorFactory::withProduct(1)->create();
         $product = $vendor->products->first();
 
         $data = $this->getProductData();
-
+        Storage::fake('public');
         $this->actingAs($vendor)
             ->patch("/api/vendor/product/{$product->id}", $data)
             ->assertStatus(200);
@@ -89,5 +88,22 @@ class VendorProductTest extends TestCase
                 UploadedFile::fake()->image('img.png')
             ]
         ];
+    }
+
+    /** @test */
+    public function vendor_can_delete_product_image()
+    {
+        $this->withoutExceptionHandling();
+
+        $vendor = VendorFactory::withProduct(1)->withImage(1)->create();
+        $image = $vendor->products->first()->images()->first();
+
+        $this->actingAs($vendor)
+            ->delete('/api/vendor/image', ['image_id' => $image->id])
+            ->assertStatus(200);
+
+        $this->assertDatabaseMissing('galleries', [
+            'id' => $image->id
+        ]);
     }
 }

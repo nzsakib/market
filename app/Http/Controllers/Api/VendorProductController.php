@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repository\ProductRepository;
 use App\Http\Resources\ProductResource;
+use App\Repository\ImageRepository;
 
 class VendorProductController extends Controller
 {
@@ -14,9 +15,15 @@ class VendorProductController extends Controller
      */
     private $productRepo;
 
-    public function __construct(ProductRepository $product)
+    /**
+     * @var ImageRepository
+     */
+    private $imageRepo;
+
+    public function __construct(ProductRepository $product, ImageRepository $image)
     {
         $this->productRepo = $product;
+        $this->imageRepo = $image;
     }
 
     /**
@@ -76,6 +83,25 @@ class VendorProductController extends Controller
             'success' => true,
             'message' => 'Product updated',
             'product' => $product->load('images') // Change to product resource
+        ]);
+    }
+
+    public function deleteImage(Request $request)
+    {
+        $this->validate($request, [
+            'image_id' => 'required'
+        ]);
+
+        $image = $this->imageRepo->findOrFail($request->image_id);
+
+        abort_unless($image->product->user_id == auth()->id(), 403);
+
+        $this->imageRepo->deleteFromDisk($image->image_path);
+        $this->imageRepo->delete($image);
+
+        return response([
+            'success' => true,
+            'message' => 'Image deleted'
         ]);
     }
 }

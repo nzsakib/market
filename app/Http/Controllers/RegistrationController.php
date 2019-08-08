@@ -37,4 +37,9 @@ class RegistrationController extends Controller
     {
         return view('registration.notify');
     }
+
+    public function notifyEmail()
+    {
+        return view('auth.verify');
+    }
 }
