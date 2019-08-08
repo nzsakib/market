@@ -55,4 +55,26 @@ class VendorProductController extends Controller
             'product' => $product
         ]);
     }
+
+    public function update(int $productId, Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'quantity' => 'required',
+            'price' => 'required',
+            'images' => 'sometimes|array'
+        ]);
+
+        $product = $this->productRepo->update(
+            $this->productRepo->findOrFail($productId),
+            $request->all()
+        );
+
+        return response([
+            'success' => true,
+            'message' => 'Product updated',
+            'product' => $product->load('images') // Change to product resource
+        ]);
+    }
 }

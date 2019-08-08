@@ -102,4 +102,27 @@ class ProductRepository
             $product->images()->create(['image_path' => $path]);
         }
     }
+
+    /**
+     * Update a product with given data
+     *
+     * @param Product $product
+     * @param array $data
+     * @return Product
+     */
+    public function update(Product $product, array $data) : Product
+    {
+        $product->update([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'price' => $data['price'],
+            'quantity' => $data['quantity'],
+        ]);
+
+        if (isset($data['images'])) {
+            $this->insertImages($product, $data['images']);
+        }
+
+        return $product;
+    }
 }

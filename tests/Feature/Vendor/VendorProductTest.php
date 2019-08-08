@@ -49,4 +49,37 @@ class VendorProductTest extends TestCase
 
         $this->assertCount(1, auth()->user()->products->first()->images);
     }
+
+    /** @test */
+    public function vendor_can_update_product()
+    {
+        $this->withoutExceptionHandling();
+
+        $vendor = VendorFactory::withProduct(1)->create();
+        $product = $vendor->products->first();
+
+        $data = [
+            'title' => 'changed title',
+            'description' => 'changed',
+            'quantity' => 10,
+            'price' => 100,
+            'images' => [
+                UploadedFile::fake()->image('img.png')
+            ]
+        ];
+
+        $this->actingAs($vendor)
+            ->patch("/api/vendor/product/{$product->id}", $data)
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'quantity' => $data['quantity'],
+            'price' => $data['price'],
+        ]);
+
+        $this->assertCount(1, $product->images);
+    }
 }
