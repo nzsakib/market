@@ -15,5 +15,12 @@ DB_TEST_PASSWORD=
 - run `php artisan migrate --database testing`
 - `./vendor/bin/phpunit`
 
+# Vendor 
+- sold product count this week 
+- sold product count this month 
+- sold product count today 
+- total new order today 
+- new order this week 
+
 
 
