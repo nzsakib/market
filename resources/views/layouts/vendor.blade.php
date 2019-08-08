@@ -27,10 +27,10 @@
                             <a class="nav-link" href="{{ route('vendor.profile') }}">My Accounts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('vendor.product.index') }}">List Products</a>
+                            <a class="nav-link" href="{{ route('vendor.productList') }}">List Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Wishlist</a>
+                            <a class="nav-link" href="{{ route('vendor.productAdd') }}">Add a Product</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>

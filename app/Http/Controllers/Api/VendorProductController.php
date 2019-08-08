@@ -104,4 +104,12 @@ class VendorProductController extends Controller
             'message' => 'Image deleted'
         ]);
     }
+
+    public function show($productId)
+    {
+        $product = $this->productRepo->findOrFail($productId);
+
+        ProductResource::withoutWrapping();
+        return new ProductResource($product);
+    }
 }

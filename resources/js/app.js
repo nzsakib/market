@@ -24,6 +24,8 @@ Vue.component('CustomerOrderList', require('./components/CustomerOrderList.vue')
 Vue.component('CustomerOrderDetails', require('./components/CustomerOrderDetails.vue').default);
 Vue.component('Cart', require('./components/Carts.vue').default);
 Vue.component('CustomerProfile', require('./components/CustomerProfile.vue').default);
+Vue.component('VendorProductList', require('./components/VendorProductList.vue').default);
+Vue.component('VendorAddProduct', require('./components/VendorAddProduct.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
