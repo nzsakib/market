@@ -2,7 +2,7 @@
   <div>
     <div class="row images">
       <div class="col-3" v-for="image in product.images" :key="image.id">
-        <img :src="image.image_path" alt class="img-fluid" />
+        <img :src="'/storage' + image.image_path" alt class="img-fluid" />
       </div>
     </div>
     <form action method="POST" enctype="multipart/form-data">
@@ -35,21 +35,29 @@
         ></textarea>
       </div>
 
-      <button class="btn btn-primary" @click.prevent="createProduct">Save</button>
+      <button class="btn btn-primary" @click.prevent="save">Save</button>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["productid"],
+  props: {
+    productid: {
+      default: null
+    },
+    update: {
+      default: false
+    }
+  },
+  //   props: ["productid", "update"],
   data() {
     return {
       product: {
         title: "",
         description: "",
         price: null,
-        quantity: 1,
+        quantity: 1
         // images: []
       },
       images: []
@@ -57,14 +65,46 @@ export default {
   },
 
   methods: {
+    save() {
+      if (this.update) {
+        this.updateProduct();
+      } else {
+        this.createProduct();
+      }
+    },
+    updateProduct() {
+      const formData = new FormData();
+      for (let property in this.product) {
+          if (property !== 'images') {
+              formData.append(property, this.product[property]);
+          }
+      }
+
+      this.images.forEach(image => {
+        formData.append("images[]", image);
+      });
+
+      const config = {
+        headers: { "content-type": "multipart/form-data" }
+      };
+
+      formData.append('_method', 'PATCH');
+    
+      axios.post('/api/vendor/product/' + this.productid, formData)
+        .then(res => {
+            console.log(res.data);
+            this.product = res.data.product;
+            location.href = "/vendor/products";
+        });
+    },
     createProduct() {
       const formData = new FormData();
       for (let property in this.product) {
         formData.append(property, this.product[property]);
       }
-      
+
       this.images.forEach(image => {
-          formData.append('images[]', image);
+        formData.append("images[]", image);
       });
 
       const config = {
@@ -87,7 +127,6 @@ export default {
     },
 
     addImage(event) {
-      // console.log(event.target.files);
       const files = event.target.files;
       this.images = [...files];
     }

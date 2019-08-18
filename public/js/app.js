@@ -2287,7 +2287,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["productid"],
+  props: {
+    productid: {
+      "default": null
+    },
+    update: {
+      "default": false
+    }
+  },
+  //   props: ["productid", "update"],
   data: function data() {
     return {
       product: {
@@ -2301,8 +2309,41 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     };
   },
   methods: {
-    createProduct: function createProduct() {
+    save: function save() {
+      if (this.update) {
+        this.updateProduct();
+      } else {
+        this.createProduct();
+      }
+    },
+    updateProduct: function updateProduct() {
       var _this = this;
+
+      var formData = new FormData();
+
+      for (var property in this.product) {
+        if (property !== 'images') {
+          formData.append(property, this.product[property]);
+        }
+      }
+
+      this.images.forEach(function (image) {
+        formData.append("images[]", image);
+      });
+      var config = {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      };
+      formData.append('_method', 'PATCH');
+      axios.post('/api/vendor/product/' + this.productid, formData).then(function (res) {
+        console.log(res.data);
+        _this.product = res.data.product;
+        location.href = "/vendor/products";
+      });
+    },
+    createProduct: function createProduct() {
+      var _this2 = this;
 
       var formData = new FormData();
 
@@ -2311,7 +2352,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }
 
       this.images.forEach(function (image) {
-        formData.append('images[]', image);
+        formData.append("images[]", image);
       });
       var config = {
         headers: {
@@ -2321,20 +2362,19 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       axios.post("/api/vendor/product", formData, config).then(function (res) {
         if (res.data.success) {
           console.log("Created product.");
-          _this.product = {};
+          _this2.product = {};
           location.href = "/vendor/products";
         }
       });
     },
     getProductDetails: function getProductDetails() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/api/vendor/product/" + this.productid).then(function (res) {
-        _this2.product = res.data;
+        _this3.product = res.data;
       });
     },
     addImage: function addImage(event) {
-      // console.log(event.target.files);
       var files = event.target.files;
       this.images = _toConsumableArray(files);
     }
@@ -21322,7 +21362,7 @@ var render = function() {
         return _c("div", { key: image.id, staticClass: "col-3" }, [
           _c("img", {
             staticClass: "img-fluid",
-            attrs: { src: image.image_path, alt: "" }
+            attrs: { src: "/storage" + image.image_path, alt: "" }
           })
         ])
       }),
@@ -21459,7 +21499,7 @@ var render = function() {
             on: {
               click: function($event) {
                 $event.preventDefault()
-                return _vm.createProduct($event)
+                return _vm.save($event)
               }
             }
           },

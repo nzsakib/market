@@ -49,7 +49,7 @@ class ProductRepository
      */
     public function findOrFail(int $productId) : Product
     {
-        return $this->product->findOrFail($productId);
+        return $this->product->with('images')->findOrFail($productId);
     }
 
     /**
