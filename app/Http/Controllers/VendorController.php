@@ -33,4 +33,12 @@ class VendorController extends Controller
     {
         return view('vendor.productDetails', compact('productId'));
     }
+
+    public function newOrders()
+    {
+        $user = auth()->user();
+        $orders = $user->vendorOrders()->with('product')->latest()->pending()->get();
+
+        return view('vendor.newOrders', compact('orders'));
+    }
 }

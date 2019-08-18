@@ -14,4 +14,16 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function scopePending($query)
+    {
+        return $query->whereHas('order', function ($q) {
+            $q->where('status', 'pending');
+        });
+    }
 }
