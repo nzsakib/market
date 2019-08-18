@@ -41,4 +41,10 @@ class VendorController extends Controller
 
         return view('vendor.newOrders', compact('orders'));
     }
+
+    public function dashboard()
+    {
+        // $lifetime = auth()->user()->vendorOrders()->delivered()->
+        // return view('vendor.dashboard');
+    }
 }
