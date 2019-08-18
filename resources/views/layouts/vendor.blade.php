@@ -33,7 +33,7 @@
                             <a class="nav-link" href="{{ route('vendor.productAdd') }}">Add a Product</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('vendor.productAdd') }}">New Orders</a>
+                            <a class="nav-link" href="{{ route('vendor.newOrders') }}">New Orders</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('vendor.productAdd') }}">Sold Products</a>

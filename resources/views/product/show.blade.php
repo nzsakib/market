@@ -21,7 +21,11 @@
                 </div>
 
                 <div class="product-details__cta">
-                    <a href="#" class="btn btn-primary">Add To Cart</a>
+                    <form action="/cart" method="POST">
+                        @csrf 
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="btn btn-sm btn-primary">Add to cart</button>
+                    </form>
                 </div>
             </div>
         </div>

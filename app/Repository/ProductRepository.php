@@ -125,4 +125,9 @@ class ProductRepository
 
         return $product;
     }
+
+    public function availableProducts()
+    {
+        return $this->product->where('status', Product::STATUS_APPROVED)->with('images')->latest()->paginate(15);
+    }
 }

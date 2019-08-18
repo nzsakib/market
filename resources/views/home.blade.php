@@ -6,7 +6,7 @@
     <div class="row">
         @foreach ($products as $product)
         <div class="col-3 product">
-            <img src="{{ $product->image }}" alt="{{ $product->title }}" class="product__thumbnail img-fluid">
+            <img src="/storage/{{ optional($product->images->first())->image_path }}" alt="{{ $product->title }}" class="product__thumbnail img-fluid">
             <a href="{{ route('product.details', $product) }}">
                 <h1 class="product__title">{{ $product->title }}</h1>
             </a>
@@ -26,5 +26,6 @@
         </div>     
         @endforeach
     </div>
+    {{ $products->links() }}
 </div>
 @endsection

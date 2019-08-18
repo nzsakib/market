@@ -5,15 +5,11 @@
           <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
         </ol>
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="https://placeimg.com/600/600/arch" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="https://placeimg.com/600/600/arch" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="https://placeimg.com/600/600/arch" class="d-block w-100" alt="...">
-          </div>
+          @foreach ($product->images as $index => $image)
+            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+              <img src="/storage/{{ $image->image_path }}" class="d-block w-100" alt="{{ $product->title }}">
+            </div>
+          @endforeach
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
